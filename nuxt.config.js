@@ -1,9 +1,12 @@
+import fiber from 'fibers';
+import sass from 'sass';
+
 export default {
   ssr: true,
   srcDir: 'src/',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Lengames',
+    title: 'YChatter',
     htmlAttrs: {
       lang: 'en',
     },
@@ -16,7 +19,7 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  css: ['@/assets/scss/reset.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
@@ -30,6 +33,10 @@ export default {
     '@nuxt/typescript-build',
     '@nuxtjs/firebase',
   ],
+
+  styleResources: {
+    scss: ['@/assets/scss/_variables.scss'],
+  },
 
   firebase: {
     config: {
@@ -52,7 +59,7 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxtjs/pwa', '@nuxtjs/firebase'],
+  modules: ['@nuxtjs/style-resources', '@nuxtjs/pwa', '@nuxtjs/firebase'],
 
   router: {},
 
@@ -71,12 +78,13 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    babel: {
-      plugins: [
-        // https://github.com/nuxt/nuxt.js/issues/9224#issuecomment-830577523
-        ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
-        ['@babel/plugin-proposal-private-methods', { loose: true }],
-      ],
+    loaders: {
+      scss: {
+        implementation: sass,
+        sassOptions: {
+          fiber,
+        },
+      },
     },
     // Run ESLint on save
     extend(config, { isDev, isClient }) {
@@ -89,16 +97,5 @@ export default {
         });
       }
     },
-  },
-
-  storybook: {
-    addons: [
-      '@storybook/addon-actions/register',
-      '@storybook/addon-backgrounds/register',
-      '@storybook/addon-controls/register',
-      '@storybook/addon-docs/register',
-      '@storybook/addon-toolbars/register',
-      '@storybook/addon-viewport/register',
-    ],
   },
 };

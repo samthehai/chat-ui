@@ -1,0 +1,54 @@
+html,
+body,
+#__nuxt,
+#__layout,
+#__layout > div {
+  width: 100%;
+  height: 100%;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+html {
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+
+  * {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+img {
+  max-width: 100%;
+}
+
+button {
+  background-color: #fff;
+  border: none;
+}
+
+svg {
+  vertical-align: top;
+}
