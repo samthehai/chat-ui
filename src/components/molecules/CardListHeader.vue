@@ -1,7 +1,10 @@
 <template>
   <div class="user-card">
     <CardItem :name="name" :img-url="imgUrl" />
-    <SearchForm class="user-card__search-form" place-holder="search name..." />
+    <SearchForm
+      class="user-card__search-form"
+      place-holder="Search YChatter..."
+    />
   </div>
 </template>
 
