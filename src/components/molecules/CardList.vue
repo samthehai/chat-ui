@@ -1,8 +1,8 @@
 <template>
   <div class="card-list">
     <ul>
-      <li v-for="(item, index) in cardList" :key="index">
-        <CardItem :name="item.name" :img-url="item.imgUrl" />
+      <li v-for="(item, index) in cardList" :key="`${item.id}_${index}`">
+        <CardItem :name="item.name" :img-url="item.pictureUrl" />
       </li>
     </ul>
   </div>
@@ -12,18 +12,13 @@
 import Vue, { PropOptions } from 'vue';
 import CardItem from '@/components/atoms/CardItem.vue';
 
-export type Card = {
-  name: string;
-  imgUrl: string;
-};
-
 export default Vue.extend({
   components: { CardItem },
   props: {
     cardList: {
       type: Array,
       required: true,
-    } as PropOptions<Card[]>,
+    } as PropOptions<User[]>,
   },
 });
 </script>

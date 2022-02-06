@@ -5,7 +5,8 @@
       width="40"
       height="40"
       :alt="name"
-      :src="imgUrl"
+      src="https://avatars.githubusercontent.com/u/28634475?v=4"
+      @click="$emit('click-icon')"
     />
     <p class="card-item__name">{{ name }}</p>
   </div>
@@ -20,10 +21,10 @@ export default Vue.extend({
       type: String,
       required: true,
     } as PropOptions<string>,
-    imgUrl: {
-      type: String,
-      required: true,
-    } as PropOptions<string>,
+    // imgUrl: {
+    //   type: String,
+    //   required: true,
+    // } as PropOptions<string>,
   },
 });
 </script>
@@ -37,6 +38,7 @@ export default Vue.extend({
 
   &__avatar {
     border-radius: 2px;
+    cursor: pointer;
   }
 
   &__name {

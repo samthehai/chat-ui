@@ -1,0 +1,11 @@
+#import "@/api/graphql/connections/conversationMessagesConnection.gql"
+
+query conversationMessages($conversationId: ID!, $first: Int!, $after: ID!) {
+  conversationMessages(
+    conversationId: $conversationId
+    first: $first
+    after: $after
+  ) {
+    ...conversationMessagesConnectionFragment
+  }
+}

@@ -1,0 +1,12 @@
+#import "@/api/graphql/connections/conversationMessagesEdge.gql"
+#import "@/api/graphql/connections/pageInfo.gql"
+
+fragment conversationMessagesConnectionFragment on ConversationMessagesConnection {
+  pageInfo {
+    ...pageInfoFragment
+  }
+  edges {
+    ...conversationMessagesEdgeFragment
+  }
+  totalCount
+}

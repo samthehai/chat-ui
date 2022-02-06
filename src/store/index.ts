@@ -1,5 +1,6 @@
 import { ActionTree, MutationTree, GetterTree } from 'vuex';
-import { ACTION_TYPES as LOGIN_ACTION_TYPES } from '@/store/login';
+import { ACTION_TYPES as AUTH_ACTION_TYPES } from '@/store/auth';
+import { Context } from '@nuxt/types';
 
 export type RootState = {
   isDebugMode: boolean;
@@ -53,12 +54,12 @@ export const actions: ActionTree<RootState, RootState> = {
   [ACTION_TYPES.SET_IS_RENDERED_BY_SERVER]({ commit }, isRenderedByServer) {
     commit(MUTATION_TYPES.SET_IS_RENDERED_BY_SERVER, isRenderedByServer);
   },
-  async nuxtServerInit({ dispatch }, ctx) {
+  async nuxtServerInit({ dispatch }, ctx: Context) {
     if (ctx.res && ctx.res.locals && ctx.res.locals.user) {
       const { allClaims: claims, ...authUser } = ctx.res.locals.user;
 
       await dispatch(
-        `login/${LOGIN_ACTION_TYPES.ON_AUTH_STATE_CHANGED}`,
+        `auth/${AUTH_ACTION_TYPES.ON_AUTH_STATE_CHANGED}`,
         {
           authUser,
           claims,

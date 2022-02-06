@@ -1,0 +1,16 @@
+schema: http://localhost:4000/query
+config:
+  constEnums: true
+  immutableTypes: true
+  enumsAsTypes: true
+  noExport: true
+  scalars:
+    Uint64: string
+generates:
+  src/@types/generated.schema.d.ts:
+    plugins:
+      - typescript
+  src/@types/generated.queries.d.ts:
+    documents: src/api/graphql/**/*.gql
+    plugins:
+      - typescript-operations

@@ -14,6 +14,15 @@ $font-size-ss: font-size-px-to-rem(13px);
 $font-size-xs: font-size-px-to-rem(12px);
 $font-size-2xs: font-size-px-to-rem(10px);
 
+$color-white: #ffffff;
+$color-blue: #3b5998;
+$color-green: #50C7C7;
+$color-red: #de5246;
+$color-graylight20: rgb(128, 128, 128, 0.2);
+$color-graylight30: rgb(128, 128, 128, 0.3);
+$color-graylight40: rgb(128, 128, 128, 0.4);
+$color-black: rgb(0,0,0);
+$color-black10: rgb(0,0,0,0.1);
 $color-black20: rgb(0,0,0,0.2);
 
 $breakpoint-sp: 375px;

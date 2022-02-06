@@ -5,9 +5,9 @@
     class="basic-text"
     :class="{
       'basic-text--border-box': border === 'box',
-      'basic-text--font-size-s': textFontSize === 's',
-      'basic-text--font-size-m': textFontSize === 'm',
-      'basic-text--font-size-l': textFontSize === 'l',
+      'basic-text--font-size-s': fontSize === 's',
+      'basic-text--font-size-m': fontSize === 'm',
+      'basic-text--font-size-l': fontSize === 'l',
       'basic-text--padding-none': padding === 'none',
       'basic-text--padding-s': padding === 's',
       'basic-text--padding-m': padding === 'm',
@@ -24,9 +24,6 @@ import Vue, { PropOptions } from 'vue';
 
 const BORDERS = ['default', 'box', 'none'] as const;
 type Borders = typeof BORDERS[number];
-
-const BG_COLORS = ['default'] as const;
-type BgColors = typeof BG_COLORS[number];
 
 const FONT_SIZES = ['s', 'm', 'l'] as const;
 type FontSizes = typeof FONT_SIZES[number];
@@ -47,14 +44,7 @@ export default Vue.extend({
         return (BORDERS as readonly string[]).includes(value);
       },
     } as PropOptions<Borders>,
-    bgColor: {
-      type: String,
-      default: 'default',
-      validator(value: string): value is BgColors {
-        return (BG_COLORS as readonly string[]).includes(value);
-      },
-    } as PropOptions<BgColors>,
-    textFontSize: {
+    fontSize: {
       type: String,
       default: 'm',
       validator(value: string): value is FontSizes {

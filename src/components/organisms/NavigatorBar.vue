@@ -11,14 +11,14 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  GETTER_TYPES as LOGIN_GETTER_TYPES,
-  ACTION_TYPES as LOGIN_ACTION_TYPES,
-} from '@/store/login';
+  GETTER_TYPES as AUTH_GETTER_TYPES,
+  ACTION_TYPES as AUTH_ACTION_TYPES,
+} from '@/store/auth';
 
 export default Vue.extend({
   computed: {
     isLoggedIn(): boolean {
-      return this.$store.getters[`login/${LOGIN_GETTER_TYPES.IS_LOGGED_IN}`];
+      return this.$store.getters[`auth/${AUTH_GETTER_TYPES.IS_LOGGED_IN}`];
     },
   },
   methods: {
@@ -26,7 +26,7 @@ export default Vue.extend({
       // TODO: modal
       try {
         await this.$store.dispatch(
-          `login/${LOGIN_ACTION_TYPES.SIGN_IN_WITH_FACEBOOK}`,
+          `auth/${AUTH_ACTION_TYPES.LOG_IN_WITH_FACEBOOK}`,
         );
       } catch (e) {
         // eslint-disable-next-line no-console
@@ -36,7 +36,7 @@ export default Vue.extend({
     async logout(): Promise<void> {
       // TODO: modal
       try {
-        await this.$store.dispatch(`login/${LOGIN_ACTION_TYPES.LOGOUT}`);
+        await this.$store.dispatch(`auth/${AUTH_ACTION_TYPES.LOGOUT}`);
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log(e);

@@ -1,0 +1,14 @@
+#import "@/api/graphql/entities/conversation.gql"
+#import "@/api/graphql/entities/user.gql"
+
+fragment participantFragment on Participant {
+  id
+  conversation {
+    ...conversationFragment
+  }
+  user {
+    ...userFragment
+  }
+  createdAt
+  updatedAt
+}

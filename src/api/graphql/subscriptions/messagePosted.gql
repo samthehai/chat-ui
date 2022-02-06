@@ -1,0 +1,7 @@
+#import "@/api/graphql/entities/message.gql"
+
+subscription messagePosted {
+  messagePosted {
+    ...messageFragment
+  }
+}

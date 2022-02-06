@@ -1,0 +1,7 @@
+#import "@/api/graphql/entities/user.gql"
+
+mutation login {
+  login {
+    ...userFragment
+  }
+}

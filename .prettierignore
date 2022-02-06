@@ -1,0 +1,3 @@
+src/@types/generated.schema.d.ts
+src/@types/generated.queries.d.ts
+.nuxt

@@ -1,6 +1,10 @@
 <template>
   <div class="user-card">
-    <CardItem :name="name" :img-url="imgUrl" />
+    <CardItem
+      :name="name"
+      :img-url="imgUrl"
+      @click-icon="$emit('click-icon')"
+    />
     <SearchForm
       class="user-card__search-form"
       place-holder="Search YChatter..."

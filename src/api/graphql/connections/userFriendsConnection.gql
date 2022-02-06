@@ -1,0 +1,12 @@
+#import "@/api/graphql/connections/userFriendsEdge.gql"
+#import "@/api/graphql/connections/pageInfo.gql"
+
+fragment userFriendsConnectionFragment on UserFriendsConnection {
+  pageInfo {
+    ...pageInfoFragment
+  }
+  edges {
+    ...userFriendsEdgeFragment
+  }
+  totalCount
+}

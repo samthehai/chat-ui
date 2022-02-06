@@ -1,0 +1,13 @@
+#import "@/api/graphql/entities/user.gql"
+
+fragment conversationFragment on Conversation {
+  id
+  title
+  creator {
+    ...userFragment
+  }
+  type
+  createdAt
+  updatedAt
+  deletedAt
+}

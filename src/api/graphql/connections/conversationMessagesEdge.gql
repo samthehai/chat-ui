@@ -1,0 +1,8 @@
+#import "@/api/graphql/entities/message.gql"
+
+fragment conversationMessagesEdgeFragment on ConversationMessagesEdge {
+  cursor
+  node {
+    ...messageFragment
+  }
+}

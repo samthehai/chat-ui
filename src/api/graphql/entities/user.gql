@@ -1,0 +1,9 @@
+fragment userFragment on User {
+  id
+  name
+  pictureUrl
+  provider
+  firebaseId
+  emailAddress
+  emailVerified
+}

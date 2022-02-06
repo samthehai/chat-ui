@@ -1,0 +1,9 @@
+#import "@/api/graphql/entities/message.gql"
+
+mutation postMessage($input: PostMessageInput!) {
+  postMessage(input: $input) {
+    message {
+      ...messageFragment
+    }
+  }
+}

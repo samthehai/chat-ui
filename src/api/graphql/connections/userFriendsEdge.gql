@@ -1,0 +1,8 @@
+#import "@/api/graphql/entities/user.gql"
+
+fragment userFriendsEdgeFragment on UserFriendsEdge {
+  cursor
+  node {
+    ...userFragment
+  }
+}

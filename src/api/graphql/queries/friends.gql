@@ -1,0 +1,17 @@
+#import "@/api/graphql/connections/userFriendsConnection.gql"
+
+query friends(
+  $first: Int!
+  $after: ID!
+  $sortBy: FriendsSortByType!
+  $sortOrder: SortOrderType!
+) {
+  friends(
+    first: $first
+    after: $after
+    sortBy: $sortBy
+    sortOrder: $sortOrder
+  ) {
+    ...userFriendsConnectionFragment
+  }
+}

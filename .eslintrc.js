@@ -5,11 +5,16 @@ module.exports = {
     node: true,
   },
   extends: [
+    '@nuxtjs',
     '@nuxtjs/eslint-config-typescript',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:prettier/recommended',
     'plugin:nuxt/recommended',
+    'prettier',
   ],
-  plugins: [],
-  // add your custom rules here
-  rules: {},
+  rules: {
+    'no-undef': 'off',
+    'no-use-before-define': 'off',
+  },
 };

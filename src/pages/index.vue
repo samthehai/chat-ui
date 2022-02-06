@@ -2,16 +2,17 @@
   <div class="home-page">
     <div class="home-page__sidebar">
       <CardListHeader
-        name="Hai Sam"
-        img-url="https://avatars.githubusercontent.com/u/28634475?v=4"
+        :name="me ? me.name : ''"
+        :img-url="me ? me.pictureUrl : ''"
+        @click-icon="clickIcon"
       />
-      <CardList :card-list="conversations" />
+      <CardList :card-list="friends" />
     </div>
     <div class="home-page__main">
       <MessageList class="home-page__message" :messages="messages" />
-      <BasicText
+      <BaseText
         v-model="message"
-        text-font-size="s"
+        font-size="s"
         padding="s"
         class="home-page__text"
       />
@@ -22,58 +23,133 @@
 <script lang="ts">
 import Vue from 'vue';
 import CardListHeader from '@/components/molecules/CardListHeader.vue';
-import CardList, { Card } from '@/components/molecules/CardList.vue';
+import CardList from '@/components/molecules/CardList.vue';
 import MessageList, { Message } from '@/components/molecules/MessageList.vue';
-import BasicText from '@/components/atoms/BasicText.vue';
+import BaseText from '@/components/atoms/BaseText.vue';
+import {
+  ACTION_TYPES as USER_ACTION_TYPES,
+  GETTER_TYPES as USER_GETTER_TYPES,
+} from '@/store/user';
+import { ACTION_TYPES as AUTH_ACTION_TYPES } from '@/store/auth';
+// import friendsQuery from '@/api/graphql/queries/friends.gql';
+// import postMessageMutation from '@/api/graphql/mutations/postMessage.gql';
+// import userJoinedSubscription from '@/api/graphql/subscriptions/userJoined.gql';
+import messagePostedSubscription from '@/api/graphql/subscriptions/messagePosted.gql';
+
+// const friendsPageSize = 10;
+const friendInitialCursor: Scalars['ID'] = '0';
 
 type Data = {
+  friends: User[];
+  messages: Message[];
   message: string;
+  friendsCursor: Scalars['ID'];
 };
 
 export default Vue.extend({
   name: 'HomePage',
-  components: { CardListHeader, CardList, MessageList, BasicText },
+  components: { CardListHeader, CardList, MessageList, BaseText },
+  async asyncData(ctx): Promise<void> {
+    await ctx.store.dispatch(`user/${USER_ACTION_TYPES.GET_ME}`, ctx);
+  },
   data(): Data {
     return {
+      friends: [],
+      messages: [],
       message: '',
+      friendsCursor: friendInitialCursor,
     };
   },
   computed: {
-    conversations(): Card[] {
-      return [
-        {
-          name: 'Helen',
-          imgUrl:
-            'https://scontent-nrt1-1.xx.fbcdn.net/v/t1.6435-9/131228826_2801681920106746_1874780214052817543_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=pumRcYmkOnwAX8OUDsT&_nc_ht=scontent-nrt1-1.xx&oh=7bed40b95f397aac78db56c2014ff247&oe=60C570CD',
-        },
-        {
-          name: 'Hai Sam',
-          imgUrl: 'https://avatars.githubusercontent.com/u/28634475?v=4',
-        },
-      ];
+    me(): User {
+      return this.$store.getters[`user/${USER_GETTER_TYPES.ME}`];
     },
-    messages(): Message[] {
-      return [
-        {
-          position: 'right',
-          date: '2021-05-16',
-          imgUrl: 'https://avatars.githubusercontent.com/u/28634475?v=4',
-          text: 'This is a random message :)',
+  },
+  apollo: {
+    // friends: {
+    //   query: friendsQuery,
+    //   // Initial variables
+    //   variables: {
+    //     first: friendsPageSize,
+    //     after: friendInitialCursor,
+    //     sortOrder: 'SORT_ORDER_ASC',
+    //     sortBy: 'FRIENDS_SORT_BY_NAME',
+    //   },
+    //   methods: {
+    //     showMore() {
+    //       // Fetch more data and transform the original result
+    //       this.$apollo.queries.friendsPage.fetchMore({
+    //         // New variables
+    //         variables: {
+    //           first: friendsPageSize,
+    //           after: this.friendsCursor,
+    //           sortOrder: 'SORT_ORDER_ASC',
+    //           sortBy: 'FRIENDS_SORT_BY_NAME',
+    //         },
+    //         // Transform the previous result with new data
+    //         updateQuery: (previousResult, { fetchMoreResult }) => {
+    //           const newFriends: User[] = fetchMoreResult.friends.edges.map(
+    //             (edge: UserFriendsEdge) => edge.node,
+    //           );
+    //           const pageInfo: PageInfo = fetchMoreResult.friends.pageInfo;
+    //           this.friendsCursor = pageInfo.endCursor;
+
+    //           return {
+    //             friends: {
+    //               __typename: previousResult.friends.__typename,
+    //               // Merging the friend list
+    //               friends: [...previousResult.friends.friends, ...newFriends],
+    //             },
+    //           };
+    //         },
+    //       });
+    //     },
+    //   },
+    //   update({ friends }) {
+    //     this.friendsCursor = friends.pageInfo.endCursor;
+    //     const friendsList = friends.edges.map(
+    //       (edge: UserFriendsEdge) => edge.node,
+    //     );
+
+    //     return friendsList;
+    //   },
+    //   // subscribeToMore: {
+    //   //   document: userJoinedSubscription,
+    //   //   variables() {
+    //   //     return {};
+    //   //   },
+    //   //   updateQuery: (prev, { subscriptionData }) => {
+    //   //     // Response data not found
+    //   //     if (!subscriptionData.data) {
+    //   //       return prev;
+    //   //     }
+
+    //   //     const user: User = subscriptionData.data.userJoined;
+    //   //     if (!user || prev.users.find((u: User) => u.id === user.id)) {
+    //   //       return prev;
+    //   //     }
+
+    //   //     return Object.assign({}, prev, {
+    //   //       users: [user, ...prev.users],
+    //   //     });
+    //   //   },
+    //   // },
+    // },
+    // Use Simple subscription becase messagePosted doesn't involve with any query.
+    $subscribe: {
+      messagePosted: {
+        query: messagePostedSubscription,
+        result(res: { data: { messagePosted: Message } }) {
+          // save data to store
+          this.messages.unshift(res.data.messagePosted);
         },
-        {
-          position: 'left',
-          date: '2021-05-16',
-          imgUrl:
-            'https://scontent-nrt1-1.xx.fbcdn.net/v/t1.6435-9/131228826_2801681920106746_1874780214052817543_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=pumRcYmkOnwAX8OUDsT&_nc_ht=scontent-nrt1-1.xx&oh=7bed40b95f397aac78db56c2014ff247&oe=60C570CD',
-          text: 'No, this is not a random message :|',
-        },
-        {
-          position: 'right',
-          date: '2021-05-16',
-          imgUrl: 'https://avatars.githubusercontent.com/u/28634475?v=4',
-          text: 'Okay, not a random message :))',
-        },
-      ];
+      },
+    },
+  },
+  methods: {
+    async clickIcon(): Promise<void> {
+      await this.$store.dispatch(`auth/${AUTH_ACTION_TYPES.LOGOUT}`);
+      window.location.reload();
     },
   },
 });

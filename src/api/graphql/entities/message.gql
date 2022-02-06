@@ -1,0 +1,17 @@
+#import "@/api/graphql/entities/user.gql"
+#import "@/api/graphql/entities/conversation.gql"
+
+fragment messageFragment on Message {
+  id
+  sender {
+    ...userFragment
+  }
+  conversation {
+    ...conversationFragment
+  }
+  type
+  content
+  createdAt
+  updatedAt
+  deletedAt
+}
